@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<h:head>
+	<style type="text/css">
+.ui-stack {
+	z-index: 1000;
+}
+</style>
+</h:head>
+
+<h:body>
+
+<style type="text/css"> 
+    /*demo*/
+    .ui-dataview-list .ui-dataview-row {
+        border-bottom: 1px solid #A8A8A8;
+        padding: 25px 10px;
+        /* with the exported variables from Nova and Luna Themes*/
+        border-bottom-color: var(--input-border-color, #A8A8A8);
+    }
+ 
+    .logo {
+        width: 5%;
+    }
+    .detail {
+        width: 85%;
+        padding-left: 25px;
+    }
+</style>
+ 
+<h:form id="form">
+    <p:dataView var="vm" value="#{listVirtualMachinesView.vms}" rows="12" paginator="true" rowsPerPageTemplate="6,12,16"
+                paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                gridIcon="pi pi-th-large" listIcon="pi pi-bars">
+ 
+        <p:dataViewGridItem>
+            <p:panel header="#{vm.getInstanceId()}" style="text-align:center">
+                <h:panelGrid columns="1" style="width:100%">
+                    <p:graphicImage name="demo/images/car/#{vm.getInstanceId()}.gif"/> 
+ 
+                    <h:outputText value="#{vm.getInstanceId()}" />
+ 
+                    <p:commandLink update=":form:vmDetail" oncomplete="PF('vmDialog').show()" title="View Detail">
+                        <h:outputText styleClass="ui-icon pi pi-search" style="margin:0 auto;" />
+                        <f:setPropertyActionListener value="#{vm}" target="#{listVirtualMachinesView.selectedVmInstance}" />
+                    </p:commandLink>
+                </h:panelGrid>
+            </p:panel>
+        </p:dataViewGridItem>
+ 
+        <p:dataViewListItem>
+            <h:panelGrid columns="3" style="width:100%" columnClasses="logo,detail">
+                <p:graphicImage value="/images/ubuntu.png" /> 
+ 
+                <p:outputPanel>
+                    <h:panelGrid columns="2" cellpadding="5">
+                        <h:outputText value="Instance Id:" />
+                        <h:outputText value="#{vm.getInstanceId()}" style="font-weight: bold"/>
+ 
+                        <h:outputText value="Instance Type:" />
+                        <h:outputText value="#{vm.getInstanceType()}" style="font-weight: bold"/>
+ 
+                        <h:outputText value="Instance State:" />
+                        <h:outputText value="#{vm.getState().getName()}" style="font-weight: bold"/>
+                    </h:panelGrid>
+                </p:outputPanel>
+ 
+                <p:commandLink update=":form:vmDetail" oncomplete="PF('vmDialog').show()" title="View Detail">
+                    <h:outputText styleClass="ui-icon pi pi-search" style="margin:0 auto;" />
+                    <f:setPropertyActionListener value="#{vm}" target="#{listVirtualMachinesView.selectedVmInstance}" />
+                </p:commandLink>
+            </h:panelGrid>
+        </p:dataViewListItem>
+    </p:dataView>
+ 
+    <p:dialog header="Instance Info" widgetVar="vmDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+        <p:outputPanel id="vmDetail" style="text-align:center;">
+            <p:panelGrid  columns="2" rendered="#{not empty listVirtualMachinesView.selectedVmInstance}" columnClasses="label,value">
+                <f:facet name="header">
+                    <p:graphicImage name="demo/images/car/#{listVirtualMachinesView.selectedVmInstance.getInstanceId()}-big.gif"/> 
+                </f:facet>
+ 
+                <h:outputText value="Id:" />
+                <h:outputText value="#{listVirtualMachinesView.selectedVmInstance.getInstanceId()}" />
+ 
+                <h:outputText value="Year" />
+                <h:outputText value="#{listVirtualMachinesView.selectedVmInstance.getInstanceId()}" />
+ 
+                <h:outputText value="Price" />
+                <h:outputText value="$#{listVirtualMachinesView.selectedVmInstance.getInstanceId()}" />
+            </p:panelGrid>
+        </p:outputPanel>
+    </p:dialog>
+</h:form>
+  
+<p:stack icon="https://www.primefaces.org/showcase/resources/demo/images/dock/stack.png" expanded="true">
+		<p:menuitem value="Home" url="listvms.xhtml">
+			<i class="pi pi-home"></i>
+		</p:menuitem>
+
+		<p:menuitem value="Launch" url="launchinstance.xhtml">
+			<i class="pi pi-caret-right"></i>
+		</p:menuitem>
+		<p:menuitem value="List" url="#">
+			<i class="pi pi-list"></i>
+		</p:menuitem>
+
+	</p:stack>
+</h:body>
+</html>
