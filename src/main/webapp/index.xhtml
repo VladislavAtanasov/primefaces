@@ -40,9 +40,9 @@
         <p:dataViewGridItem>
             <p:panel header="#{vm.getInstanceId()}" style="text-align:center">
                 <h:panelGrid columns="1" style="width:100%">
-                    <p:graphicImage name="demo/images/car/#{vm.getInstanceId()}.gif"/> 
+                    <p:graphicImage name="demo/images/car/#{vm.instanceId}.gif"/> 
  
-                    <h:outputText value="#{vm.getInstanceId()}" />
+                    <h:outputText value="#{vm.instanceId}" />
  
                     <p:commandLink update=":form:vmDetail" oncomplete="PF('vmDialog').show()" title="View Detail">
                         <h:outputText styleClass="ui-icon pi pi-search" style="margin:0 auto;" />
@@ -54,24 +54,24 @@
  
         <p:dataViewListItem>
             <h:panelGrid columns="3" style="width:100%" columnClasses="logo,detail">
-                <p:graphicImage value="/images/ubuntu.png" /> 
+                <p:graphicImage value="/images/${vm.imageName}.png" width="150" height="150"/> 
  
                 <p:outputPanel>
                     <h:panelGrid columns="2" cellpadding="5">
                         <h:outputText value="Instance Id:" />
-                        <h:outputText value="#{vm.getInstanceId()}" style="font-weight: bold"/>
+                        <h:outputText value="#{vm.instanceId}" style="font-weight: bold"/>
  
                         <h:outputText value="Instance Type:" />
-                        <h:outputText value="#{vm.getInstanceType()}" style="font-weight: bold"/>
+                        <h:outputText value="#{vm.instanceType}" style="font-weight: bold"/>
  
                         <h:outputText value="Instance State:" />
-                        <h:outputText value="#{vm.getState().getName()}" style="font-weight: bold"/>
+                        <h:outputText value="#{vm.state}" style="font-weight: bold"/>
                     </h:panelGrid>
                 </p:outputPanel>
  
                 <p:commandLink update=":form:vmDetail" oncomplete="PF('vmDialog').show()" title="View Detail">
                     <h:outputText styleClass="ui-icon pi pi-search" style="margin:0 auto;" />
-                    <f:setPropertyActionListener value="#{vm}" target="#{listVirtualMachinesView.selectedVmInstance}" />
+                    <f:setPropertyActionListener value="#{vm}" target="#{listVirtualMachinesView.selectedVmInstance.instanceId}" />
                 </p:commandLink>
             </h:panelGrid>
         </p:dataViewListItem>
@@ -79,25 +79,25 @@
  
     <p:dialog header="Instance Info" widgetVar="vmDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
         <p:outputPanel id="vmDetail" style="text-align:center;">
-            <p:panelGrid  columns="2" rendered="#{not empty listVirtualMachinesView.selectedVmInstance}" columnClasses="label,value">
+            <p:panelGrid  columns="2" rendered="true" columnClasses="instanceId,instanceType">
                 <f:facet name="header">
-                    <p:graphicImage name="demo/images/car/#{listVirtualMachinesView.selectedVmInstance.getInstanceId()}-big.gif"/> 
+                    <p:graphicImage value="/images/zoom.png" width="50" height="50"/> 
                 </f:facet>
  
                 <h:outputText value="Id:" />
-                <h:outputText value="#{listVirtualMachinesView.selectedVmInstance.getInstanceId()}" />
+                <h:outputText value="#{vm.instanceId}" />
  
                 <h:outputText value="Year" />
-                <h:outputText value="#{listVirtualMachinesView.selectedVmInstance.getInstanceId()}" />
+                <h:outputText value="#{vm.instanceId}" />
  
                 <h:outputText value="Price" />
-                <h:outputText value="$#{listVirtualMachinesView.selectedVmInstance.getInstanceId()}" />
+                <h:outputText value="$#{vm.instanceId}" />
             </p:panelGrid>
         </p:outputPanel>
     </p:dialog>
 </h:form>
   
-<p:stack icon="https://www.primefaces.org/showcase/resources/demo/images/dock/stack.png" expanded="true">
+<!-- <p:stack icon="https://www.primefaces.org/showcase/resources/demo/images/dock/stack.png" expanded="true">
 		<p:menuitem value="Home" url="listvms.xhtml">
 			<i class="pi pi-home"></i>
 		</p:menuitem>
@@ -109,6 +109,6 @@
 			<i class="pi pi-list"></i>
 		</p:menuitem>
 
-	</p:stack>
+	</p:stack> -->
 </h:body>
 </html>
