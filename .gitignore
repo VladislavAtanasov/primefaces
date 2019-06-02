@@ -28,3 +28,6 @@ HELP.md
 ### VS Code ###
 .mvn/
 .vscode/
+.DS_Store
+.metadata
+

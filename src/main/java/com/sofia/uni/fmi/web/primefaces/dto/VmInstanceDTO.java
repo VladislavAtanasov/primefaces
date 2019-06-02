@@ -16,7 +16,6 @@ public class VmInstanceDTO {
 		this.instanceId = instance.getInstanceId();
 		this.instanceType = instance.getInstanceType();
 		this.state = instance.getState().getName();
-		System.out.println(instance.getTags());
 		this.imageName = instance.getTags().stream().filter(t -> t.getKey().equals("imageName")).findFirst()
 				.map(v -> v.getValue()).get();
 	}

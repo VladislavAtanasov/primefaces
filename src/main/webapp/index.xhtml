@@ -10,10 +10,6 @@
 	z-index: 1000;
 }
 </style>
-</h:head>
-
-<h:body>
-
 <style type="text/css"> 
     /*demo*/
     .ui-dataview-list .ui-dataview-row {
@@ -32,6 +28,11 @@
     }
 </style>
  
+</h:head>
+
+<h:body>
+
+<p:linkButton outcome="launch" value="Launch VM Instance" style="margin-right:20px;"/>
 <h:form id="form">
     <p:dataView var="vm" value="#{listVirtualMachinesView.vms}" rows="12" paginator="true" rowsPerPageTemplate="6,12,16"
                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<h:head>
+	<style type="text/css">
+.label {
+	width: 20%;
+	padding: 4px;
+}
+
+.value {
+	width: 80%;
+	padding: 4px;
+}
+
+.grid {
+	width: 100%;
+}
+
+.error {
+	color: red;
+}
+
+.outputLabel {
+	font-weight: bold;
+}
+
+.grid {
+	width: 33%;
+	padding: 4px;
+}
+</style>
+</h:head>
+
+<h:body>
+	<h:form>
+		<input type="hidden" name="${_csrf.parameterName}"
+			value="${_csrf.token}" />
+		<p:growl id="growl" sticky="true" showDetail="true" />
+
+		<p:wizard flowListener="#{createVmInstanceWizard.onFlowProcess}">
+			<p:tab id="image" title="Choose Instance Image">
+				<p:panel header="Image Details">
+					<p:messages />
+					<h:panelGrid columns="2" columnClasses="label, value">
+						<h:outputText value="Image Name *" />
+						<p:selectOneRadio id="images"
+							value="#{createVmInstanceWizard.vm.imageName}"
+							layout="responsive" columns="1" required="true">
+							<f:selectItem itemLabel="SUSE Linux Enterprise Server 15"
+								itemValue="SUSE" />
+							<f:selectItem itemLabel="Microsoft Windows Server 2019"
+								itemValue="WINDOWS" />
+							<f:selectItem itemLabel="Ubuntu Server 18.04" itemValue="UBUNTU" />
+						</p:selectOneRadio>
+
+					</h:panelGrid>
+				</p:panel>
+			</p:tab>
+
+			<p:tab id="size" title="Choose Instance Size">
+				<p:panel header="Size Details">
+					<p:messages />
+					<h:panelGrid columns="2" columnClasses="label, value">
+						<h:outputText value="Size: " />
+						<p:selectOneRadio id="sizes"
+							value="#{createVmInstanceWizard.vm.size}" layout="responsive"
+							columns="1" required="true">
+							<f:selectItem itemLabel="t2.nano" itemValue="t2.nano" />
+							<f:selectItem itemLabel="t2.micro" itemValue="t2.micro" />
+							<f:selectItem itemLabel="t2.small" itemValue="t2.small" />
+						</p:selectOneRadio>
+
+					</h:panelGrid>
+				</p:panel>
+			</p:tab>
+
+			<p:tab id="sg" title="Create a Security Group">
+				<p:panel header="Security Group Details">
+					<p:messages />
+					<h:panelGrid columns="2" columnClasses="label, value">
+						<h:outputText value="Security Group Name: " />
+						<p:inputText value="#{createVmInstanceWizard.vm.sgName}"
+							required="true" />
+					</h:panelGrid>
+				</p:panel>
+			</p:tab>
+
+			<p:tab id="keyPair" title="Create a Key Pair">
+				<p:panel header="Key Pair Information">
+					<p:messages />
+					<h:panelGrid columns="2" columnClasses="label, value">
+						<h:outputText value="Key Pair name: " />
+						<p:inputText value="#{createVmInstanceWizard.vm.keyPairName}"
+							required="true" label="KeyPairName" />
+					</h:panelGrid>
+				</p:panel>
+			</p:tab>
+
+			<p:tab id="confirm" title="Confirmation">
+				<p:panel header="Confirmation">
+					<h:panelGrid id="confirmation" columns="1" columnClasses="grid">
+						<h:outputText value="Instance Image Name: " />
+						<h:outputText value="#{createVmInstanceWizard.vm.imageName}"
+							styleClass="outputLabel" />
+
+						<h:outputText value="Instance size: " />
+						<h:outputText value="#{createVmInstanceWizard.vm.size}"
+							styleClass="outputLabel" />
+
+						<h:outputText value="Security Group Name: " />
+						<h:outputText value="#{createVmInstanceWizard.vm.sgName}"
+							styleClass="outputLabel" />
+
+						<h:outputText value="Key Pair Name: " />
+						<h:outputText value="#{createVmInstanceWizard.vm.keyPairName}"
+							styleClass="outputLabel" />
+
+					</h:panelGrid>
+
+					<p:commandButton value="Create" oncomplete="redirect()"
+						action="#{createVmInstanceWizard.create}" update="growl"
+						process="@this" />
+					<script type="text/javascript">
+     				redirect = function() {
+     				   window.location.href = 'index.xhtml';
+  					}
+					</script>
+				</p:panel>
+			</p:tab>
+		</p:wizard>
+
+	</h:form>
+</h:body>
+</html>
