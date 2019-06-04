@@ -10,106 +10,137 @@
 	z-index: 1000;
 }
 </style>
-<style type="text/css"> 
-    /*demo*/
-    .ui-dataview-list .ui-dataview-row {
-        border-bottom: 1px solid #A8A8A8;
-        padding: 25px 10px;
-        /* with the exported variables from Nova and Luna Themes*/
-        border-bottom-color: var(--input-border-color, #A8A8A8);
-    }
- 
-    .logo {
-        width: 5%;
-    }
-    .detail {
-        width: 85%;
-        padding-left: 25px;
-    }
+	<style type="text/css">
+/*demo*/
+.ui-dataview-list .ui-dataview-row {
+	border-bottom: 1px solid #A8A8A8;
+	padding: 25px 10px;
+	/* with the exported variables from Nova and Luna Themes*/
+	border-bottom-color: var(- -input-border-color, #A8A8A8);
+}
+
+.logo {
+	width: 5%;
+}
+
+.detail {
+	width: 85%;
+	padding-left: 25px;
+}
+
+body .ui-widget.ui-icon {
+	font-family: 'Material Icons';
+}
+
+.ui-icon {
+	text-indent: 0;
+}
 </style>
- 
 </h:head>
 
 <h:body>
+	<div align="center" style="margin:20px;">
+		<h:graphicImage value="/images/amazon.png" width="850" height="200" />
+	<br />
+	<p:linkButton outcome="launch" value="Launch VM Instance"
+		style="margin:20px;" />
+	</div>
+	<h:form id="form">
+		<input type="hidden" name="${_csrf.parameterName}"
+			value="${_csrf.token}" />
+		<p:dataView var="vm" rendered="#{not empty listVirtualMachinesView.vms}"  value="#{listVirtualMachinesView.vms}" rows="12"
+			paginator="true" rowsPerPageTemplate="6,12,16"
+			paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+			listIcon="fa fa-bars">
 
-<p:linkButton outcome="launch" value="Launch VM Instance" style="margin-right:20px;"/>
-<h:form id="form">
-    <p:dataView var="vm" value="#{listVirtualMachinesView.vms}" rows="12" paginator="true" rowsPerPageTemplate="6,12,16"
-                paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                gridIcon="pi pi-th-large" listIcon="pi pi-bars">
- 
-        <p:dataViewGridItem>
-            <p:panel header="#{vm.getInstanceId()}" style="text-align:center">
-                <h:panelGrid columns="1" style="width:100%">
-                    <p:graphicImage name="demo/images/car/#{vm.instanceId}.gif"/> 
- 
-                    <h:outputText value="#{vm.instanceId}" />
- 
-                    <p:commandLink update=":form:vmDetail" oncomplete="PF('vmDialog').show()" title="View Detail">
-                        <h:outputText styleClass="ui-icon pi pi-search" style="margin:0 auto;" />
-                        <f:setPropertyActionListener value="#{vm}" target="#{listVirtualMachinesView.selectedVmInstance}" />
-                    </p:commandLink>
-                </h:panelGrid>
-            </p:panel>
-        </p:dataViewGridItem>
- 
-        <p:dataViewListItem>
-            <h:panelGrid columns="3" style="width:100%" columnClasses="logo,detail">
-                <p:graphicImage value="/images/${vm.imageName}.png" width="150" height="150"/> 
- 
-                <p:outputPanel>
-                    <h:panelGrid columns="2" cellpadding="5">
-                        <h:outputText value="Instance Id:" />
-                        <h:outputText value="#{vm.instanceId}" style="font-weight: bold"/>
- 
-                        <h:outputText value="Instance Type:" />
-                        <h:outputText value="#{vm.instanceType}" style="font-weight: bold"/>
- 
-                        <h:outputText value="Instance State:" />
-                        <h:outputText value="#{vm.state}" style="font-weight: bold"/>
-                    </h:panelGrid>
-                </p:outputPanel>
- 
-                <p:commandLink update=":form:vmDetail" oncomplete="PF('vmDialog').show()" title="View Detail">
-                    <h:outputText styleClass="ui-icon pi pi-search" style="margin:0 auto;" />
-                    <f:setPropertyActionListener value="#{vm}" target="#{listVirtualMachinesView.selectedVmInstance.instanceId}" />
-                </p:commandLink>
-            </h:panelGrid>
-        </p:dataViewListItem>
-    </p:dataView>
- 
-    <p:dialog header="Instance Info" widgetVar="vmDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
-        <p:outputPanel id="vmDetail" style="text-align:center;">
-            <p:panelGrid  columns="2" rendered="true" columnClasses="instanceId,instanceType">
-                <f:facet name="header">
-                    <p:graphicImage value="/images/zoom.png" width="50" height="50"/> 
-                </f:facet>
- 
-                <h:outputText value="Id:" />
-                <h:outputText value="#{vm.instanceId}" />
- 
-                <h:outputText value="Year" />
-                <h:outputText value="#{vm.instanceId}" />
- 
-                <h:outputText value="Price" />
-                <h:outputText value="$#{vm.instanceId}" />
-            </p:panelGrid>
-        </p:outputPanel>
-    </p:dialog>
-</h:form>
-  
-<!-- <p:stack icon="https://www.primefaces.org/showcase/resources/demo/images/dock/stack.png" expanded="true">
-		<p:menuitem value="Home" url="listvms.xhtml">
-			<i class="pi pi-home"></i>
-		</p:menuitem>
 
-		<p:menuitem value="Launch" url="launchinstance.xhtml">
-			<i class="pi pi-caret-right"></i>
-		</p:menuitem>
-		<p:menuitem value="List" url="#">
-			<i class="pi pi-list"></i>
-		</p:menuitem>
+			<p:dataViewListItem>
+				<h:panelGrid columns="7" style="width:100%"
+					columnClasses="logo,detail">
+					<p:graphicImage value="/images/${vm.imageName}.png" width="150"
+						height="150" />
 
-	</p:stack> -->
+					<p:outputPanel>
+						<h:panelGrid columns="2" cellpadding="5">
+							<h:outputText value="Instance Id:" />
+							<h:outputText value="#{vm.instanceId}" style="font-weight: bold" />
+
+							<h:outputText value="Instance Type:" />
+							<h:outputText value="#{vm.instanceType}"
+								style="font-weight: bold" />
+
+							<h:outputText value="Instance State:" />
+							<h:outputText value="#{vm.state}" style="font-weight: bold" />
+						</h:panelGrid>
+					</p:outputPanel>
+
+					<p:commandLink style="margin:auto;" update=":form:vmDetail"
+						oncomplete="PF('vmDialog').show()" title="Download Key">
+						<h:outputText class="fa fa-key" />
+						<f:setPropertyActionListener value="#{vm}"
+							target="#{listVirtualMachinesView.selectedVmInstance.instanceId}" />
+					</p:commandLink>
+					<p:commandLink style="margin:auto;" update=":form:vmDetail"
+						oncomplete="PF('vmDialog').show()" title="Power On">
+						<h:outputText class="fa fa-caret-right" />
+						<f:setPropertyActionListener value="#{vm}"
+							target="#{listVirtualMachinesView.selectedVmInstance.instanceId}" />
+					</p:commandLink>
+					<h:commandLink style="margin:auto;" action="#{listVirtualMachinesView.stop}" title="Power Off">
+						<h:outputText class="fa fa-power-off" />
+						<f:setPropertyActionListener value="#{vm}"
+							target="#{listVirtualMachinesView.selectedVmInstance}" />
+					</h:commandLink>
+					<p:commandLink style="margin:auto;" update=":form:vmDetail"
+						oncomplete="PF('vmDialog').show()" title="Terminate">
+						<h:outputText class="fa fa-trash" />
+						<f:setPropertyActionListener value="#{vm}"
+							target="#{listVirtualMachinesView.selectedVmInstance.instanceId}" />
+					</p:commandLink>
+					<p:commandLink style="margin:auto;" icon="ui-icon pi pi-power-off"
+						update=":form:vmDetail" oncomplete="PF('vmDialog').show()"
+						title="Info">
+						<h:outputText class="fa fa-info-circle" />
+						<f:setPropertyActionListener value="#{vm}"
+							target="#{listVirtualMachinesView.selectedVmInstance}" />
+					</p:commandLink>
+				</h:panelGrid>
+			</p:dataViewListItem>
+		</p:dataView>
+
+		<p:dialog header="Instance Info" widgetVar="vmDialog" modal="true"
+			showEffect="fade" hideEffect="fade" resizable="false">
+			<p:outputPanel id="vmDetail" style="text-align:center;">
+				<p:panelGrid columns="2" rendered="true"
+					columnClasses="instanceId,instanceType">
+					<f:facet name="header">
+						<p:graphicImage value="/images/zoom.png" width="30" height="30" />
+					</f:facet>
+
+					<h:outputText value="Id" />
+					<h:outputText value="#{listVirtualMachinesView.selectedVmInstance.instanceId}" />
+
+					<h:outputText value="Type" />
+					<h:outputText value="#{listVirtualMachinesView.selectedVmInstance.instanceType}" />
+
+					<h:outputText value="Image" />
+					<h:outputText value="#{listVirtualMachinesView.selectedVmInstance.imageName}" />
+					
+					<h:outputText value="Security Group" />
+					<h:outputText value="#{listVirtualMachinesView.selectedVmInstance.sgName}" />
+					
+					<h:outputText value="VPC Id" />
+					<h:outputText value="#{listVirtualMachinesView.selectedVmInstance.vpcId}" />
+					
+					<h:outputText value="Key Pair" />
+					<h:outputText value="#{listVirtualMachinesView.selectedVmInstance.keyName}" />
+					
+					<h:outputText value="State" />
+					<h:outputText value="#{listVirtualMachinesView.selectedVmInstance.state}" />
+				</p:panelGrid>
+			</p:outputPanel>
+		</p:dialog>
+	</h:form>
+
 </h:body>
 </html>

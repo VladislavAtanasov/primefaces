@@ -9,6 +9,8 @@ import java.util.stream.Collectors;
 import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
 
+import org.apache.http.HttpStatus;
+
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
@@ -22,10 +24,13 @@ import com.amazonaws.services.ec2.model.CreateSecurityGroupRequest;
 import com.amazonaws.services.ec2.model.CreateSecurityGroupResult;
 import com.amazonaws.services.ec2.model.CreateTagsRequest;
 import com.amazonaws.services.ec2.model.Instance;
+import com.amazonaws.services.ec2.model.InstanceStateName;
 import com.amazonaws.services.ec2.model.IpPermission;
 import com.amazonaws.services.ec2.model.IpRange;
 import com.amazonaws.services.ec2.model.Reservation;
 import com.amazonaws.services.ec2.model.RunInstancesRequest;
+import com.amazonaws.services.ec2.model.StopInstancesRequest;
+import com.amazonaws.services.ec2.model.StopInstancesResult;
 import com.amazonaws.services.ec2.model.Tag;
 import com.sofia.uni.fmi.web.primefaces.mapper.Image;
 import com.sofia.uni.fmi.web.primefaces.mapper.ImagesMapper;
@@ -42,7 +47,12 @@ public class AmazonVirtualMachineService {
 		if (reservations.isEmpty()) {
 			return new ArrayList<>();
 		}
-		return reservations.stream().flatMap(r -> r.getInstances().stream()).collect(Collectors.toList());
+
+		return reservations.stream().flatMap(r -> r.getInstances().stream().filter(
+				instance -> !instance.getState().getName().equalsIgnoreCase(InstanceStateName.Terminated.toString())
+						&& !instance.getState().getName().equalsIgnoreCase(InstanceStateName.ShuttingDown.toString())
+						&& !instance.getState().getName().equalsIgnoreCase(InstanceStateName.Stopping.toString())))
+				.collect(Collectors.toList());
 	}
 
 	public String createVm(CreateVmInstance request) {
@@ -85,6 +95,15 @@ public class AmazonVirtualMachineService {
 		ec2Client.createTags(tagsRequest);
 
 		return instanceId;
+	}
+
+	public boolean stopVm(String instanceId) {
+		AmazonEC2 ec2Client = getEc2Client();
+		StopInstancesRequest request = new StopInstancesRequest().withInstanceIds(instanceId);
+
+		StopInstancesResult stopInstancesResult = ec2Client.stopInstances(request);
+		System.out.println("CODA " + stopInstancesResult.getSdkHttpMetadata().getHttpStatusCode());
+		return stopInstancesResult.getSdkHttpMetadata().getHttpStatusCode() != HttpStatus.SC_OK ? false : true;
 	}
 
 	public void createDefaultVm() {
