@@ -27,22 +27,52 @@ public class ListVirtualMachinesView implements Serializable {
 
 	@PostConstruct
 	public void init() {
-		this.vms = service.listVms().stream().map(i -> new VmInstanceDTO(i)).collect(Collectors.toList());
+		this.refreshData();
 	}
 
 	public void stop() {
-		System.out.println("Vlqzohhh");
 		String instanceId = selectedVmInstance.getInstanceId();
-		boolean stopVm = service.stopVm(instanceId);
-		if (stopVm) {
-			FacesMessage msg = new FacesMessage("Success", "Your instance id: " + instanceId + " is being stopped");
+		if (service.stopVm(instanceId)) {
+			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
+					"Your instance id: " + instanceId + " is being stopped", null);
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 		} else {
-			FacesMessage msg = new FacesMessage("Fail", "Your instance id: " + instanceId + " failed to stop");
+			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,
+					"Your instance id: " + instanceId + " failed to stop", null);
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 		}
 	}
 
+	public void start() {
+		String instanceId = selectedVmInstance.getInstanceId();
+		if (service.startVm(instanceId)) {
+			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
+					"Your instance id: " + instanceId + " is being started", null);
+			FacesContext.getCurrentInstance().addMessage(null, msg);
+		} else {
+			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,
+					"Your instance id: " + instanceId + " failed to start", null);
+			FacesContext.getCurrentInstance().addMessage(null, msg);
+		}
+	}
+
+	public void terminate() {
+		String instanceId = selectedVmInstance.getInstanceId();
+		if (service.terminate(instanceId)) {
+			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO,
+					"Your instance id: " + instanceId + " is being terminated", null);
+			FacesContext.getCurrentInstance().addMessage(null, msg);
+		} else {
+			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,
+					"Your instance id: " + instanceId + " failed to terminate", null);
+			FacesContext.getCurrentInstance().addMessage(null, msg);
+		}
+	}
+
+	public void getKeyPairs() {
+		service.getKeyPairs();
+	}
+	
 	public List<VmInstanceDTO> getVms() {
 		return vms;
 	}
@@ -59,4 +89,7 @@ public class ListVirtualMachinesView implements Serializable {
 		this.selectedVmInstance = selectedVmInstance;
 	}
 
+	public void refreshData() {
+		this.vms = service.listVms().stream().map(i -> new VmInstanceDTO(i)).collect(Collectors.toList());
+	}
 }

@@ -46,14 +46,17 @@ body .ui-widget.ui-icon {
 		style="margin:20px;" />
 	</div>
 	<h:form id="form">
+	
 		<input type="hidden" name="${_csrf.parameterName}"
 			value="${_csrf.token}" />
-		<p:dataView var="vm" rendered="#{not empty listVirtualMachinesView.vms}"  value="#{listVirtualMachinesView.vms}" rows="12"
+			
+			<p:poll interval="5"   
+        		listener="#{listVirtualMachinesView.refreshData}" update="vmData" /> 
+		<p:dataView id="vmData" var="vm" rendered="#{not empty listVirtualMachinesView.vms}"  value="#{listVirtualMachinesView.vms}" rows="12"
 			paginator="true" rowsPerPageTemplate="6,12,16"
 			paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 			listIcon="fa fa-bars">
-
-
+		
 			<p:dataViewListItem>
 				<h:panelGrid columns="7" style="width:100%"
 					columnClasses="logo,detail">
@@ -74,36 +77,28 @@ body .ui-widget.ui-icon {
 						</h:panelGrid>
 					</p:outputPanel>
 
-					<p:commandLink style="margin:auto;" update=":form:vmDetail"
-						oncomplete="PF('vmDialog').show()" title="Download Key">
-						<h:outputText class="fa fa-key" />
-						<f:setPropertyActionListener value="#{vm}"
-							target="#{listVirtualMachinesView.selectedVmInstance.instanceId}" />
-					</p:commandLink>
-					<p:commandLink style="margin:auto;" update=":form:vmDetail"
-						oncomplete="PF('vmDialog').show()" title="Power On">
-						<h:outputText class="fa fa-caret-right" />
-						<f:setPropertyActionListener value="#{vm}"
-							target="#{listVirtualMachinesView.selectedVmInstance.instanceId}" />
-					</p:commandLink>
-					<h:commandLink style="margin:auto;" action="#{listVirtualMachinesView.stop}" title="Power Off">
-						<h:outputText class="fa fa-power-off" />
-						<f:setPropertyActionListener value="#{vm}"
-							target="#{listVirtualMachinesView.selectedVmInstance}" />
-					</h:commandLink>
-					<p:commandLink style="margin:auto;" update=":form:vmDetail"
-						oncomplete="PF('vmDialog').show()" title="Terminate">
-						<h:outputText class="fa fa-trash" />
-						<f:setPropertyActionListener value="#{vm}"
-							target="#{listVirtualMachinesView.selectedVmInstance.instanceId}" />
-					</p:commandLink>
-					<p:commandLink style="margin:auto;" icon="ui-icon pi pi-power-off"
-						update=":form:vmDetail" oncomplete="PF('vmDialog').show()"
-						title="Info">
-						<h:outputText class="fa fa-info-circle" />
-						<f:setPropertyActionListener value="#{vm}"
-							target="#{listVirtualMachinesView.selectedVmInstance}" />
-					</p:commandLink>
+						<p:commandLink style="margin:15px;" action="#{listVirtualMachinesView.getKeyPairs()}" title="Download Key">
+							<h:outputText class="fa fa-key" />
+							<f:setPropertyActionListener value="#{vm}" target="#{listVirtualMachinesView.selectedVmInstance}" />
+						</p:commandLink>
+						<p:commandLink style="margin:15px;" action="#{listVirtualMachinesView.start()}" title="Power On">
+							<h:outputText class="fa fa-caret-right" />
+							<f:setPropertyActionListener value="#{vm}" target="#{listVirtualMachinesView.selectedVmInstance}" />
+						</p:commandLink>
+						<h:commandLink style="margin:15px;" action="#{listVirtualMachinesView.stop()}" title="Power Off">
+							<h:outputText class="fa fa-power-off" />
+							<f:setPropertyActionListener value="#{vm}" target="#{listVirtualMachinesView.selectedVmInstance}" />
+						</h:commandLink>
+						<p:commandLink style="margin:15px;" action="${listVirtualMachinesView.terminate()}" title="Terminate">
+							<h:outputText class="fa fa-trash" />
+							<f:setPropertyActionListener value="#{vm}" target="#{listVirtualMachinesView.selectedVmInstance}" />
+						</p:commandLink>
+						<p:commandLink style="margin:15px;" icon="ui-icon pi pi-power-off"
+							update=":form:vmDetail" oncomplete="PF('vmDialog').show()"
+							title="Info">
+							<h:outputText class="fa fa-info-circle" />
+							<f:setPropertyActionListener value="#{vm}" target="#{listVirtualMachinesView.selectedVmInstance}" />
+						</p:commandLink>
 				</h:panelGrid>
 			</p:dataViewListItem>
 		</p:dataView>
