@@ -35,8 +35,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(final HttpSecurity http) throws Exception {
-		http.authorizeRequests().antMatchers("/anonymous*").anonymous().antMatchers("/login*").authenticated().and()
-				.formLogin().successHandler(myAuthenticationSuccessHandler()).and().httpBasic();
+		http.authorizeRequests().antMatchers("/**").authenticated().and().formLogin()
+				.successHandler(myAuthenticationSuccessHandler()).and().httpBasic();
 	}
 
 	@Bean

@@ -50,8 +50,8 @@ body .ui-widget.ui-icon {
 		<input type="hidden" name="${_csrf.parameterName}"
 			value="${_csrf.token}" />
 			
-			<p:poll interval="5"   
-        		listener="#{listVirtualMachinesView.refreshData}" update="vmData" /> 
+		<p:poll interval="5"   
+       		listener="#{listVirtualMachinesView.refreshData}" update="vmData" /> 
 		<p:dataView id="vmData" var="vm" rendered="#{not empty listVirtualMachinesView.vms}"  value="#{listVirtualMachinesView.vms}" rows="12"
 			paginator="true" rowsPerPageTemplate="6,12,16"
 			paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
