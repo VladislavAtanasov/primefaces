@@ -41,12 +41,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Bean
 	UserDetailsService authentication() {
-		UserDetails kaloyan = User.builder().username("kaloyan").password(pwEncoder.encode("pass")).roles("USER")
+		UserDetails user = User.builder().username("user").password(pwEncoder.encode("1234")).roles("USER")
 				.build();
 
-		System.out.println("Kaloyan's Password: " + kaloyan.getPassword());
+		System.out.println("User Password: " + user.getPassword());
 
-		return new InMemoryUserDetailsManager(kaloyan);
+		return new InMemoryUserDetailsManager(user);
 
 	}
 
