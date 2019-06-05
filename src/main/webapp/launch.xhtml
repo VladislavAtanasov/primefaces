@@ -130,7 +130,9 @@
 						process="@this" />
 					<script type="text/javascript">
      				redirect = function() {
-     				   window.location.href = 'index.xhtml';
+     					setTimeout(function() {
+	     					window.location.href = 'index.xhtml';     						
+     					}, 10000);
   					}
 					</script>
 				</p:panel>

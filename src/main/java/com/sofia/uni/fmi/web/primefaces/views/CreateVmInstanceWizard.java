@@ -22,12 +22,14 @@ public class CreateVmInstanceWizard implements Serializable {
 	private AmazonVirtualMachineService service;
 
 	public void create() {
-		String instanceId = service.createVm(vm);
-		if (instanceId != null) {
-			FacesMessage msg = new FacesMessage("Success", "Your instance id is:" + instanceId);
+		String message = service.createVm(vm);
+
+		if (message.startsWith("i-")) {
+			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Success! Your instance id is:" + message,
+					null);
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 		} else {
-			FacesMessage msg = new FacesMessage("Fail", "Invalid Input");
+			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, message, null);
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 		}
 	}

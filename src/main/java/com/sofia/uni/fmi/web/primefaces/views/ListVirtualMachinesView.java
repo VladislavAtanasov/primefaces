@@ -69,10 +69,6 @@ public class ListVirtualMachinesView implements Serializable {
 		}
 	}
 
-	public void getKeyPairs() {
-		service.getKeyPairs();
-	}
-	
 	public List<VmInstanceDTO> getVms() {
 		return vms;
 	}

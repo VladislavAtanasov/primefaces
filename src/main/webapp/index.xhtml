@@ -76,11 +76,6 @@ body .ui-widget.ui-icon {
 							<h:outputText value="#{vm.state}" style="font-weight: bold" />
 						</h:panelGrid>
 					</p:outputPanel>
-
-						<p:commandLink style="margin:15px;" action="#{listVirtualMachinesView.getKeyPairs()}" title="Download Key">
-							<h:outputText class="fa fa-key" />
-							<f:setPropertyActionListener value="#{vm}" target="#{listVirtualMachinesView.selectedVmInstance}" />
-						</p:commandLink>
 						<p:commandLink style="margin:15px;" action="#{listVirtualMachinesView.start()}" title="Power On">
 							<h:outputText class="fa fa-caret-right" />
 							<f:setPropertyActionListener value="#{vm}" target="#{listVirtualMachinesView.selectedVmInstance}" />
@@ -93,7 +88,7 @@ body .ui-widget.ui-icon {
 							<h:outputText class="fa fa-trash" />
 							<f:setPropertyActionListener value="#{vm}" target="#{listVirtualMachinesView.selectedVmInstance}" />
 						</p:commandLink>
-						<p:commandLink style="margin:15px;" icon="ui-icon pi pi-power-off"
+						<p:commandLink style="margin:15px;"
 							update=":form:vmDetail" oncomplete="PF('vmDialog').show()"
 							title="Info">
 							<h:outputText class="fa fa-info-circle" />
